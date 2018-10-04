@@ -21,10 +21,10 @@ def emoji(exp,Ex):
         a='emoji/'+exp+'.png'
         path='music/'+exp+'/'+t
 
-        if path !="":
+        '''if path !="":
             t=Thread(target=Play_Music, args = [path])
             t.deamon=True
-            t.start()
+            t.start()'''
 
     vc = cv2.imread(a)
     return(vc)
@@ -58,8 +58,9 @@ while True:
         cv2.putText(frame,result,(x,y), font, 1, (200,100,0), 3, cv2.LINE_AA)
         frame1 = emoji(result,Ex)
         Ex=result
+        cv2.imshow('frame',frame)
         cv2.imshow('emoji', frame1)  # Display the resulting frame
-    k=cv2.waitKey(2000)
+    k=cv2.waitKey(10)
 
     if k==27 & 0xFF == ord('q'):
         break
