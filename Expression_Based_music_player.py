@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import playsound
 import os, random
+import imutils
 from threading import Thread
 from keras.models import load_model
 
@@ -11,17 +12,17 @@ def Play_Music(path):
     print(path)
     playsound.playsound(path)
 
-def emoji(exp,Ex):
+def emoji(exp):
 
-    if Ex==exp:
-        a='emoji/'+exp+'.png'
-        
+    #if Ex==exp:
+    a='emoji/'+exp+'.png'
+    '''    
     else:
         t=random.choice(os.listdir("music/"+exp+"//")) #play random song
         a='emoji/'+exp+'.png'
         path='music/'+exp+'/'+t
 
-        '''if path !="":
+        if path !="":
             t=Thread(target=Play_Music, args = [path])
             t.deamon=True
             t.start()'''
@@ -35,8 +36,6 @@ model = load_model('dataset/experssion_detector.hdf5')
 target = ['angry','disgust','fear','happy','sad','surprise','neutral']
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-
-Ex=''
 while True:
     # Capture frame-by-frame 
     ret, frame = video_capture.read()
@@ -56,8 +55,8 @@ while True:
         face_crop = face_crop.reshape(1, 1,face_crop.shape[0],face_crop.shape[1])
         result = target[np.argmax(model.predict(face_crop))]
         cv2.putText(frame,result,(x,y), font, 1, (200,100,0), 3, cv2.LINE_AA)
-        frame1 = emoji(result,Ex)
-        Ex=result
+        frame1 = emoji(result)
+        frame1 = imutils.resize(frame1, width=150)
         cv2.imshow('frame',frame)
         cv2.imshow('emoji', frame1)  # Display the resulting frame
     k=cv2.waitKey(10)
